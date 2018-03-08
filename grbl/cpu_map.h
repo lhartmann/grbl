@@ -157,4 +157,10 @@
 #endif
 */
 
+// Returns true if pins are shared between limits and/or probe.
+#define LIMIT_PROBE_PINS_SHARED ( \
+  X_LIMIT_BIT == Y_LIMIT_BIT || X_LIMIT_BIT == Z_LIMIT_BIT || Y_LIMIT_BIT == Z_LIMIT_BIT || \
+  LIMIT_MASK & PROBE_MASK && LIMIT_PORT == PROBE_PORT \
+)
+
 #endif

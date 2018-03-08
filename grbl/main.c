@@ -65,6 +65,12 @@ int main(void)
   #ifdef HOMING_INIT_LOCK
     if (bit_istrue(settings.flags,BITFLAG_HOMING_ENABLE)) { sys.state = STATE_ALARM; }
   #endif
+  
+  // It is unsafe to start the machine if limit/probe pins are shared and triggered.
+  // User should kill alarm locks '$X', move the head away from the switches, and reset.
+  if (LIMIT_PROBE_PINS_SHARED && limits_get_state()) {
+    sys.state = STATE_ALARM;
+  }
 
   // Grbl initialization loop upon power-up or a system abort. For the latter, all processes
   // will return to this loop to be cleanly re-initialized.
